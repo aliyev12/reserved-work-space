@@ -1,0 +1,26 @@
+{
+  "name": "reserved-work-space",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "nodemon": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aliyev12/reserved-work-space.git"
+  },
+  "author": "Abdul Aliyev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aliyev12/reserved-work-space/issues"
+  },
+  "homepage": "https://github.com/aliyev12/reserved-work-space#readme",
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "imap": "^0.8.19",
+    "nodemon": "^1.19.1"
+  }
+}
