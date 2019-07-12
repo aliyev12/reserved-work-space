@@ -7,6 +7,7 @@ const locus = require("locus");
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
+var port = process.env.PORT || 8080;
 
 var reservationSchema = new mongoose.Schema({
   date: Date,
@@ -173,7 +174,4 @@ app.get("/del-all-reservations", (req, res) => {
   }
 });
 
-app.listen(
-  process.env.PORT,
-  console.log(`Server running on port ${process.env.PORT}`)
-);
+app.listen(port, console.log(`Server running on port ${port}`));
