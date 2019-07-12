@@ -6,7 +6,7 @@ const env = require("dotenv").config();
 const locus = require("locus");
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGO_URI);
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
 
 var reservationSchema = new mongoose.Schema({
   date: Date,
@@ -174,6 +174,6 @@ app.get("/del-all-reservations", (req, res) => {
 });
 
 app.listen(
-  process.env.PORT || 5000,
-  console.log(`Server running on port 5000`)
+  process.env.PORT,
+  console.log(`Server running on port ${process.env.PORT}`)
 );
