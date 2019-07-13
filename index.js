@@ -190,4 +190,8 @@ app.get("/del-all-reservations", (req, res) => {
   }
 });
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/front-end/build/index.html"));
+});
+
 app.listen(port, console.log(`Server running on port ${port}`));
