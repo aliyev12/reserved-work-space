@@ -9,6 +9,7 @@ function App() {
   const [reservations, setReservations] = useState([]);
   const [mailContent, setMailContent] = useState([]);
   const [mailContentRaw, setMailContentRaw] = useState([]);
+  const [todaysReservation, setTodaysReservation] = useState();
   const headers = {
     AuthToken: "nbjhb3423bghv42hgvdhb234hb",
     "Access-Control-Allow-Origin": "*"
@@ -27,8 +28,36 @@ function App() {
         headers: headers
       })
       .then(data => {
-        console.log("data => ", data);
-        setReservations(data.data);
+        const allReservations = data.data;
+        window.allReservations = allReservations;
+
+        function compare(a, b) {
+          if (new Date(a.date).getTime() < new Date(b.date).getTime()) {
+            return 1;
+          }
+          if (new Date(a.date).getTime() > new Date(b.date).getTime()) {
+            return -1;
+          }
+          return 0;
+        }
+
+        const sortedReservationsByDate = allReservations.sort(compare);
+
+        const sortedAndFiltered = sortedReservationsByDate.filter(
+          r =>
+            new Date(r.date).getTime() >= new Date().getTime() ||
+            new Date(r.date).toDateString() === new Date().toDateString()
+        );
+
+        const todays = sortedAndFiltered.find(
+          s => new Date(s.date).toDateString() === new Date().toDateString()
+        );
+
+        const todaysRoom = todays && todays.room ? todays.room : "";
+
+        setTodaysReservation(todaysRoom);
+
+        setReservations(sortedAndFiltered);
       });
   }, []);
 
@@ -54,15 +83,46 @@ function App() {
       });
   };
 
+  const buttonStyles = {
+    padding: "5px 10px",
+    backgroundColor: "pink",
+    borderRadius: "5px",
+    color: "darkblue"
+  };
+
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center"
+      }}
+    >
       <h1>Welcome to my react app! 😀</h1>
-      <ul>
+      <div
+        style={{
+          display: "flex",
+          position: "relative",
+          width: "fit-content",
+          border: "3px solid pink",
+          borderRadius: "15px",
+          padding: "8px"
+        }}
+      >
+        {todaysReservation ? (
+          <span>Today's room is: {todaysReservation}</span>
+        ) : (
+          <span>No reservations for today!</span>
+        )}
+      </div>
+      <h3>Future reservations</h3>
+      <ul style={{ listStyle: "none" }}>
         {reservations &&
           reservations.length &&
-          reservations.map(reservation => (
+          reservations.map((reservation, i) => (
             <li key={uuid()}>
-              Date:{" "}
+              {i + 1}) Date:{" "}
               {moment(reservation.date).format("dddd") +
                 " " +
                 moment(reservation.date).format("MMMM Do")}
@@ -71,7 +131,9 @@ function App() {
           ))}
       </ul>
       <div>
-        <button onClick={handleGetMailContent}>Get Mail Content </button>
+        <button style={buttonStyles} onClick={handleGetMailContent}>
+          Get Mail Content{" "}
+        </button>
         <div>
           Mail Content:{" "}
           {mailContent && mailContent.length && JSON.stringify(mailContent)}
