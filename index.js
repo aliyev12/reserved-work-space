@@ -160,6 +160,11 @@ mailListener.on("attachment", function(attachment) {
   console.log(attachment.path);
 });
 
+app.get("*", (req, res) => {
+  console.log("getting * path...");
+  res.sendFile(path.join(__dirname + "front-end/build/index.html"));
+});
+
 app.get("/get-reservations", cors(), (req, res) => {
   const authHeader = req.header(process.env.AUTH_HEADER_NAME);
   if (authHeader && authHeader === process.env.AUTH_TOKEN) {
@@ -187,10 +192,6 @@ app.get("/del-all-reservations", (req, res) => {
   } else {
     return res.json("authentication failed");
   }
-});
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/front-end/build/index.html"));
 });
 
 app.listen(port, console.log(`Server running on port ${port}`));
