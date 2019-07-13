@@ -8,6 +8,7 @@ import uuid from "uuid/v4";
 function App() {
   const [reservations, setReservations] = useState([]);
   const [mailContent, setMailContent] = useState([]);
+  const [mailContentRaw, setMailContentRaw] = useState([]);
   const headers = {
     AuthToken: "nbjhb3423bghv42hgvdhb234hb",
     "Access-Control-Allow-Origin": "*"
@@ -38,6 +39,17 @@ function App() {
       })
       .then(data => {
         console.dir(data.data);
+        window.mailContent = data.data;
+        setMailContent(data.data);
+      });
+
+    axios
+      .get(`${baseUrl}/api/get-mailcontent-raw`, {
+        headers: headers
+      })
+      .then(data => {
+        console.dir(data.data);
+        window.mailContentRaw = data.data;
         setMailContent(data.data);
       });
   };

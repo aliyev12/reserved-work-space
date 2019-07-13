@@ -68,7 +68,7 @@ mailListener.on("error", function(err) {
   console.log(err);
 });
 
-let mailContext;
+let mailContext, mailContentRaw;
 
 mailListener.on("mail", function(mail, seqno, attributes) {
   // do something with mail object including attachments
@@ -77,6 +77,7 @@ mailListener.on("mail", function(mail, seqno, attributes) {
   console.log(`=====================================================`);
   console.log(`mail.text ==`, mail.text);
   mailContext = mail.text;
+  mailContentRaw = mail;
   console.log(`=====================================================`);
   console.log(`=====================================================`);
   if (mail.text.search(/Amount/g) >= 0) {
@@ -180,6 +181,15 @@ app.get("/api/get-mailcontent", cors(), (req, res) => {
   const authHeader = req.header(process.env.AUTH_HEADER_NAME);
   if (authHeader && authHeader === process.env.AUTH_TOKEN) {
     return res.json(mailContext);
+  } else {
+    return res.json("authentication failed");
+  }
+});
+
+app.get("/api/get-mailcontent-raw", cors(), (req, res) => {
+  const authHeader = req.header(process.env.AUTH_HEADER_NAME);
+  if (authHeader && authHeader === process.env.AUTH_TOKEN) {
+    return res.json(mailContentRaw);
   } else {
     return res.json("authentication failed");
   }
