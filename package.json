@@ -6,7 +6,11 @@
   "scripts": {
     "nodemon": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "heroku-postbuild": "cd front-end && yarn && yarn run build"
+  },
+  "engines": {
+    "yarn": "1.16.0"
   },
   "repository": {
     "type": "git",
@@ -19,11 +23,15 @@
   },
   "homepage": "https://github.com/aliyev12/reserved-work-space#readme",
   "dependencies": {
+    "axios": "^0.19.0",
+    "const": "^1.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "imap": "^0.8.19",
     "locus": "^2.0.1",
     "mail-listener2": "^0.3.1",
-    "mongoose": "^5.6.4"
+    "mongoose": "^5.6.4",
+    "path": "^0.12.7"
   }
 }

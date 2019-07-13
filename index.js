@@ -1,5 +1,6 @@
 const express = require("express");
-const app = express();
+const cors = require("cors");
+const app = express().use("*", cors());
 const Imap = require("imap");
 const inspect = require("util").inspect;
 const env = require("dotenv").config();
@@ -8,6 +9,21 @@ const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
 var port = process.env.PORT || 8080;
+
+app.use(function(req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,DELETE");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With, Access-Control-Allow-Headers, Content-Type, Authorization, Origin, Accept"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
+});
+
+const path = require("path");
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, "client/build")));
 
 var reservationSchema = new mongoose.Schema({
   date: Date,
@@ -145,7 +161,7 @@ mailListener.on("attachment", function(attachment) {
   console.log(attachment.path);
 });
 
-app.get("/get-reservations", (req, res) => {
+app.get("/get-reservations", cors(), (req, res) => {
   const authHeader = req.header(process.env.AUTH_HEADER_NAME);
   if (authHeader && authHeader === process.env.AUTH_TOKEN) {
     Reservation.find({}, function(err, data) {
@@ -156,7 +172,7 @@ app.get("/get-reservations", (req, res) => {
   }
 });
 
-app.get("/get-mailContext", (req, res) => {
+app.get("/get-mailContext", cors(), (req, res) => {
   const authHeader = req.header(process.env.AUTH_HEADER_NAME);
   if (authHeader && authHeader === process.env.AUTH_TOKEN) {
     return res.json(mailContext);
