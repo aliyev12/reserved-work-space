@@ -22,7 +22,7 @@ app.use(function(req, res, next) {
 
 const path = require("path");
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, "client/build")));
+app.use(express.static(path.join(__dirname, "front-end/build")));
 
 var reservationSchema = new mongoose.Schema({
   date: Date,
@@ -189,7 +189,7 @@ app.get("/del-all-reservations", (req, res) => {
   }
 });
 
-app.get("/", (req, res) => {
+app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/front-end/build/index.html"));
 });
 
