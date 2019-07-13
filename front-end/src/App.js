@@ -3,19 +3,26 @@ import logo from "./logo.svg";
 import "./App.css";
 import axios from "axios";
 import moment from "moment";
+import uuid from "uuid/v4";
 
 function App() {
   const [reservations, setReservations] = useState([]);
   const [mailContent, setMailContent] = useState([]);
+  const headers = {
+    AuthToken: "nbjhb3423bghv42hgvdhb234hb",
+    "Access-Control-Allow-Origin": "*"
+  };
+
+  let baseUrl = "";
+  if (window.location.href.includes("localhost")) {
+    baseUrl = "http://localhost:8080";
+  } else {
+    baseUrl = "https://sleepy-castle-58931.herokuapp.com";
+  }
 
   useEffect(() => {
-    const headers = {
-      AuthToken: "nbjhb3423bghv42hgvdhb234hb",
-      "Access-Control-Allow-Origin": "*"
-    };
-
     axios
-      .get("https://sleepy-castle-58931.herokuapp.com/api/get-reservations", {
+      .get(`${baseUrl}/api/get-reservations`, {
         headers: headers
       })
       .then(data => {
@@ -26,11 +33,11 @@ function App() {
 
   const handleGetMailContent = () => {
     axios
-      .get("https://sleepy-castle-58931.herokuapp.com/api/get-mailcontent", {
+      .get(`${baseUrl}/api/get-mailcontent`, {
         headers: headers
       })
       .then(data => {
-        console.log("mailContent => ", data.data);
+        console.dir(data.data);
         setMailContent(data.data);
       });
   };
@@ -42,7 +49,7 @@ function App() {
         {reservations &&
           reservations.length &&
           reservations.map(reservation => (
-            <li>
+            <li key={uuid()}>
               Date:{" "}
               {moment(reservation.date).format("dddd") +
                 " " +
