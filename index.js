@@ -176,7 +176,7 @@ app.get("/api/get-reservations", cors(), (req, res) => {
   }
 });
 
-app.get("/get-mailContext", cors(), (req, res) => {
+app.get("/api/get-mailcontent", cors(), (req, res) => {
   const authHeader = req.header(process.env.AUTH_HEADER_NAME);
   if (authHeader && authHeader === process.env.AUTH_TOKEN) {
     return res.json(mailContext);

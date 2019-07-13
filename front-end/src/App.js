@@ -6,6 +6,7 @@ import moment from "moment";
 
 function App() {
   const [reservations, setReservations] = useState([]);
+  const [mailContent, setMailContent] = useState([]);
 
   useEffect(() => {
     const headers = {
@@ -23,6 +24,17 @@ function App() {
       });
   }, []);
 
+  const handleGetMailContent = () => {
+    axios
+      .get("https://sleepy-castle-58931.herokuapp.com/api/get-mailcontent", {
+        headers: headers
+      })
+      .then(data => {
+        console.log("mailContent => ", data.data);
+        setMailContent(data.data);
+      });
+  };
+
   return (
     <div>
       <h1>Welcome to my react app! 😀</h1>
@@ -39,6 +51,13 @@ function App() {
             </li>
           ))}
       </ul>
+      <div>
+        <button onClick={handleGetMailContent}>Get Mail Content </button>
+        <div>
+          Mail Content:{" "}
+          {mailContent && mailContent.length && JSON.stringify(mailContent)}
+        </div>
+      </div>
     </div>
   );
 }
