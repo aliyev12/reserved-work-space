@@ -4,7 +4,6 @@ const app = express().use("*", cors());
 const Imap = require("imap");
 const inspect = require("util").inspect;
 const env = require("dotenv").config();
-const locus = require("locus");
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
