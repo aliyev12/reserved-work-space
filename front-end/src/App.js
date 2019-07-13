@@ -14,7 +14,9 @@ function App() {
     };
 
     axios
-      .get("http://localhost:8080/get-reservations", { headers: headers })
+      .get("https://sleepy-castle-58931.herokuapp.com/get-reservations", {
+        headers: headers
+      })
       .then(data => {
         console.log("data => ", data);
         setReservations(data.data);
@@ -22,19 +24,22 @@ function App() {
   }, []);
 
   return (
-    <ul>
-      {reservations &&
-        reservations.length &&
-        reservations.map(reservation => (
-          <li>
-            Date:{" "}
-            {moment(reservation.date).format("dddd") +
-              " " +
-              moment(reservation.date).format("MMMM Do")}
-            , room: {reservation.room}
-          </li>
-        ))}
-    </ul>
+    <div>
+      <h1>Welcome to my react app! 😀</h1>
+      <ul>
+        {reservations &&
+          reservations.length &&
+          reservations.map(reservation => (
+            <li>
+              Date:{" "}
+              {moment(reservation.date).format("dddd") +
+                " " +
+                moment(reservation.date).format("MMMM Do")}
+              , room: {reservation.room}
+            </li>
+          ))}
+      </ul>
+    </div>
   );
 }
 
