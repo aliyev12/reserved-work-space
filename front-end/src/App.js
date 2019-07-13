@@ -14,7 +14,7 @@ function App() {
     };
 
     axios
-      .get("https://sleepy-castle-58931.herokuapp.com/get-reservations", {
+      .get("https://sleepy-castle-58931.herokuapp.com/api/get-reservations", {
         headers: headers
       })
       .then(data => {

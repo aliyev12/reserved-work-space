@@ -160,12 +160,12 @@ mailListener.on("attachment", function(attachment) {
   console.log(attachment.path);
 });
 
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
   console.log("getting * path...");
   res.sendFile(path.join(__dirname + "front-end/build/index.html"));
 });
 
-app.get("/get-reservations", cors(), (req, res) => {
+app.get("/api/get-reservations", cors(), (req, res) => {
   const authHeader = req.header(process.env.AUTH_HEADER_NAME);
   if (authHeader && authHeader === process.env.AUTH_TOKEN) {
     Reservation.find({}, function(err, data) {
