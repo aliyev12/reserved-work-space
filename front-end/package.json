@@ -1,6 +1,7 @@
 {
   "name": "front-end",
   "version": "0.1.0",
+  "homepage": "https://sleepy-castle-58931.herokuapp.com",
   "private": true,
   "proxy": "http://localhost:8080",
   "dependencies": {
